@@ -5,25 +5,27 @@ use PHPUnit\Framework\TestCase;
 
 class CurrencyConverterTest extends TestCase
 {
+
+    private $encodedExchangeRates =
+    '{
+        "baseCurrency": "EUR",
+        "exchangeRates" : {
+            "EUR": 1,
+            "USD": 5,
+            "CHF": 0.97,
+            "CNY": 2.3
+        }
+    }';
+
+
     /**
      * @test
      */
-    public function testCorrectCurrency()
+    public function testInputValue()
     {
-
-        $json =
-            '{
-                "baseCurrency": "EUR",
-                "exchangeRates" : {
-                    "EUR": 1,
-                    "USD": 5,
-                    "CHF": 0.97,
-                    "CNY": 2.3
-                }
-            }';
-
-        $converter = new CurrencyConverter($json);
-        $output = $converter->getExchangeRates();
-        $this->assertEquals(true, is_array($output));
+        $converter = new CurrencyConverter($this->encodedExchangeRates);
+        $output = $converter->convert(22.3);
+        $currency = $converter->getConvertedCurrencyByType("USD");
+        $this->assertEquals(111.2, $currency);
     }
 }

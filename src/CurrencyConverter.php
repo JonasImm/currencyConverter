@@ -19,7 +19,9 @@ class CurrencyConverter implements CurrencyConverterInterface
 {
 
     private array $exchangeRates;
+    private array $convertedCurrency;
     private string $baseCurrency;
+    private float $amount;
 
     /**
      * @param float $amount Amount to be converted
@@ -27,9 +29,18 @@ class CurrencyConverter implements CurrencyConverterInterface
     public function convert(float $amount): string
     {
         $convertedRates = [];
+        $this->amount = $amount;
 
         foreach ($this->exchangeRates as $rateDesc => $rate) {
-            $convertedRates[$rateDesc] = $rate && is_integer($rate) ? $rate * $amount : null;
+
+            if ($rate && is_integer($rate)) {
+                $convertedCurrencyRate =  $rate * $amount;
+            } else {
+                $convertedCurrencyRate =  null;
+            }
+
+            $convertedRates[$rateDesc] = $convertedCurrencyRate;
+            $this->convertedCurrency[$rateDesc] = $convertedCurrencyRate;
         }
         return json_encode($convertedRates);
     }
@@ -43,19 +54,34 @@ class CurrencyConverter implements CurrencyConverterInterface
     }
 
     /**
+     * @param string $rateDesc
+     * @param float $newRate
+     * @return bool TRUE on success, FALSE on error
+     */
+    public function setExchangeRate(string $rateDesc, float $newRate): bool
+    {
+        if (array_key_exists($rateDesc, $this->convertedCurrency)) {
+            $this->exchangeRates[$rateDesc] = $newRate;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @return string String indicating the converted value regarding the submitted rate
+     */
+    public function getConvertedCurrencyByType(string $rateDesc): string
+    {
+        return array_key_exists($rateDesc, $this->convertedCurrency) ? $this->amount . " " . $this->baseCurrency . " eqauls " . $this->convertedCurrency[$rateDesc] . " " . $rateDesc : "Submitted rate (" . $rateDesc . ") is not available to convert.";
+    }
+
+    /**
      * @return string $baseCurrency
      */
     public function getBaseCurrency(): string
     {
         return $this->baseCurrency;
-    }
-
-    /**
-     * @return string Error Message
-     */
-    private function displayError(string $errorMessage): string
-    {
-        return "ERROR: " . $errorMessage;
     }
 
     /**
@@ -91,22 +117,3 @@ class CurrencyConverter implements CurrencyConverterInterface
         $this->setExchangeRates($exchangeRates_encoded);
     }
 }
-
-
-// $json = '{
-//     "baseCurrency": "EUR",
-//     "exchangeRates" : {
-//     "EUR": 1,
-//     "USD": 5,
-//     "CHF": 0.97,
-//     "CNY": 2.3
-//     }
-//     }';
-
-// $currencyConverter = new CurrencyConverter($json);
-
-// $string = $currencyConverter->convert(22.3);
-
-// echo '<pre>';
-// print_r($string);
-// echo '</pre>';

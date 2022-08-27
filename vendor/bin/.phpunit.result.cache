@@ -1,1 +1,1 @@
-{"version":1,"defects":{"ExampleAssertionsTest::testThatStringsMatch":3,"CurrencyConverterTest::testCorrectCurrency":4},"times":{"ExampleAssertionsTest::testThatStringsMatch":0.001,"CurrencyConverterTest::testCorrectCurrency":0.002}}
+{"version":1,"defects":{"ExampleAssertionsTest::testThatStringsMatch":3,"CurrencyConverterTest::testCorrectCurrency":4,"CurrencyConverterTest::testInputValue":3},"times":{"ExampleAssertionsTest::testThatStringsMatch":0.001,"CurrencyConverterTest::testCorrectCurrency":0.002,"CurrencyConverterTest::testInputValue":0.003}}
