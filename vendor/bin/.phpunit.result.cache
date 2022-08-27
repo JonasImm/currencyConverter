@@ -1,0 +1,1 @@
+{"version":1,"defects":{"ExampleAssertionsTest::testThatStringsMatch":3,"CurrencyConverterTest::testCorrectCurrency":4},"times":{"ExampleAssertionsTest::testThatStringsMatch":0.001,"CurrencyConverterTest::testCorrectCurrency":0.002}}
