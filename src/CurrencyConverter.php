@@ -4,6 +4,8 @@ namespace App;
 
 use Exception;
 
+use function PHPUnit\Framework\throwException;
+
 interface CurrencyConverterInterface
 {
     public function convert(float $amount);
@@ -30,10 +32,9 @@ class CurrencyConverter implements CurrencyConverterInterface
     {
         $convertedRates = [];
         $this->amount = $amount;
-
         foreach ($this->exchangeRates as $rateDesc => $rate) {
 
-            if ($rate && is_integer($rate)) {
+            if ($rate) {
                 $convertedCurrencyRate =  $rate * $amount;
             } else {
                 $convertedCurrencyRate =  null;
@@ -85,6 +86,22 @@ class CurrencyConverter implements CurrencyConverterInterface
     }
 
     /**
+     * @throws Exception If wrong format or incorret exchange rate
+     */
+    private function validateExchangeRates(array $exchangeRates): bool
+    {
+        foreach ($exchangeRates as $rateDesc => $rate) {
+            if ($rateDesc && (is_integer($rate) || is_float($rate))) {
+                continue;
+            } else {
+                throw new Exception("Submitted exchange rate (" . $rateDesc . "->" . $rate . ") is wrongfully formatted.");
+            }
+        }
+        return true;
+    }
+
+
+    /**
      * Notice: If format will change, one can append below and commented line of code
      * @param string $exchangeRates_encoded
      * @throws Exception If wrong format or incorret type submitted
@@ -102,10 +119,10 @@ class CurrencyConverter implements CurrencyConverterInterface
         if (json_last_error() === JSON_ERROR_NONE && is_array($exchangeRates_decoded)) {
 
             if (array_key_exists("exchangeRates", $exchangeRates_decoded) && array_key_exists("baseCurrency", $exchangeRates_decoded)) {
-                $this->exchangeRates = $exchangeRates_decoded["exchangeRates"];
+                $this->exchangeRates = $this->validateExchangeRates($exchangeRates_decoded["exchangeRates"]) ? $exchangeRates_decoded["exchangeRates"] : [];
                 $this->baseCurrency = $exchangeRates_decoded["baseCurrency"];
             } else {
-                throw new Exception("Submitted JSON is incomplete. Please provide the baseCurrency and corresponding exhange rates");
+                throw new Exception("Submitted JSON is incomplete. Please provide the baseCurrency and corresponding exchange rates");
             }
         } else {
             throw new Exception("Wrong format submitted. Input expected to be JSON");

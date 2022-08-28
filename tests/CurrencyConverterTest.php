@@ -24,8 +24,7 @@ class CurrencyConverterTest extends TestCase
     public function testInputValue()
     {
         $converter = new CurrencyConverter($this->encodedExchangeRates);
-        $output = $converter->convert(22.3);
-        $currency = $converter->getConvertedCurrencyByType("USD");
-        $this->assertEquals(111.2, $currency);
+        $output = $converter->convert(1111);
+        $this->assertEquals(false, $output);
     }
 }
