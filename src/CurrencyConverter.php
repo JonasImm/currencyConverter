@@ -94,14 +94,19 @@ class CurrencyConverter implements CurrencyConverterInterface
      */
     private function validateExchangeRates(array $exchangeRates): bool
     {
-        foreach ($exchangeRates as $rateDesc => $rate) {
-            if ($rateDesc && (is_integer($rate) || is_float($rate))) {
-                continue;
-            } else {
-                throw new Exception("Submitted exchange rate (" . $rateDesc . "->" . $rate . ") is wrongfully formatted.");
+        if (count($exchangeRates) == 0) {
+            throw new Exception("Please provide at least 1 exchange rate.");
+        } else {
+
+            foreach ($exchangeRates as $rateDesc => $rate) {
+                if ($rateDesc && (is_integer($rate) || is_float($rate))) {
+                    continue;
+                } else {
+                    throw new Exception("Submitted exchange rate (" . $rateDesc . "->" . $rate . ") is wrongfully formatted.");
+                }
             }
+            return true;
         }
-        return true;
     }
 
 
