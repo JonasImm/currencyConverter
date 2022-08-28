@@ -30,3 +30,20 @@ interface CurrencyConverterInterface
     public function convert(float $amount, Currency $currency): string;
 }
 ```
+
+## Understanding/Interpretation:
+
+In your task you described the converting as expacting one input but displayed an interface with two params. I rewrote this to expect only one param.
+I made the converter to convert a given amount based on the data input on initialzing the class and hope that was correctly assumed.
+
+## Approach:
+
+As unit testing is a new one for me, I watched various videos and documentation. I found [Gary Clarke](https://www.youtube.com/watch?v=kkU43JdJQBE) to be very helpful. For timing reasons I implemented 5 tests.
+
+As for the **converter**, I already mentioned my thoughts on how I thought the converter will handle a input.
+
+## Struggels:
+
+I struggeled with installing PHP and PHPUnit as we usually working only on the server side and it took me longer than I'd hope it would. But I managed to setup everything accordingly.
+
+As mentioned before, we never worked with UNIT Testing but I found this to be quite interessting and challenging.
