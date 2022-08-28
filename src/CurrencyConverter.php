@@ -4,8 +4,6 @@ namespace App;
 
 use Exception;
 
-use function PHPUnit\Framework\throwException;
-
 interface CurrencyConverterInterface
 {
     public function convert(float $amount);
@@ -29,8 +27,9 @@ class CurrencyConverter implements CurrencyConverterInterface
     private string $baseCurrency;
     private float $amount;
 
+
     /**
-     * @param float $amount Amount to be converted
+     * @return string converted rates in JSON format
      */
     public function convert(float $amount): string
     {
@@ -59,8 +58,6 @@ class CurrencyConverter implements CurrencyConverterInterface
     }
 
     /**
-     * @param string $rateDesc
-     * @param float $newRate
      * @return bool TRUE on success, FALSE on error
      */
     public function setExchangeRate(string $rateDesc, float $newRate): bool
@@ -74,7 +71,7 @@ class CurrencyConverter implements CurrencyConverterInterface
     }
 
     /**
-     * @return string String indicating the converted value regarding the submitted rate
+     * @return string Small notice indicating the converted value regarding the submitted rate
      */
     public function getConvertedCurrencyByType(string $rateDesc): string
     {
@@ -82,7 +79,7 @@ class CurrencyConverter implements CurrencyConverterInterface
     }
 
     /**
-     * @return string $baseCurrency
+     * @return string base currency
      */
     public function getBaseCurrency(): string
     {
