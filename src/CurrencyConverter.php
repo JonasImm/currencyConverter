@@ -9,6 +9,10 @@ use function PHPUnit\Framework\throwException;
 interface CurrencyConverterInterface
 {
     public function convert(float $amount);
+    public function getExchangeRates(): array;
+    public function setExchangeRate(string $rateDesc, float $newRate): bool;
+    public function getBaseCurrency(): string;
+    public function getConvertedCurrencyByType(string $rateDesc): string;
 }
 
 /**
